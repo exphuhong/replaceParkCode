@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.iFox.mapperDAO.ParkUserMapper">
+    <cache eviction="FIFO" readOnly="false" flushInterval="60000" size="1024" />
+
+    <!--    ParkUser getParkUser(Integer userId);-->
+    <resultMap id="userResult" type="user">
+        <id column="id" property="userId"/>
+        <result column="user_name" property="userName"/>
+        <result column="email" property="email"/>
+        <result column="password" property="password"/>
+        <result column="school" property="school"/>
+        <result column="img_path" property="imgPath"/>
+        <result column="individual_resume" property="individualResume"/>
+    </resultMap>
+
+    <!--注册-->
+    <insert id="addUser" parameterType="user">
+        <selectKey resultType="java.lang.Long" keyProperty="userID" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO
+         tbl_user(user_name, email, PASSWORD, school, img_path, individual_resume)
+         VALUE
+        (#{userName},#{email},#{password},#{school},#{imgPath},#{individualResume})
+    </insert>
+
+
+    <!-- 登录查询-->
+    <select id="getUser" resultType="user">
+        SELECT id ,user_name,email,password,school,img_path,individual_resume
+        FROM tbl_user
+        WHERE email = #{email}
+        AND password = #{password}
+    </select>
+
+</mapper>
