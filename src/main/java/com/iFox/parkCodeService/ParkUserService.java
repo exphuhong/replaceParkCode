@@ -12,4 +12,6 @@ public interface ParkUserService {
     String addUser(ParkUser parkUser);
 
     ParkUser getUser(String email, String password);
+
+    String getEmail(String email);
 }

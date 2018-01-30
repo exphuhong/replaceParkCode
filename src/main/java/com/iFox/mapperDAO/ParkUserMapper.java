@@ -15,4 +15,6 @@ public interface ParkUserMapper {
     //登录
     ParkUser getUser(@Param("email") String email, @Param("password") String password);
 
+    //判断邮箱是否已经注册
+    String getEmail(@Param("email") String email);
 }

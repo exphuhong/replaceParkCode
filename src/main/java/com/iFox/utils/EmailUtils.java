@@ -1,11 +1,13 @@
 package com.iFox.utils;
 
+import com.iFox.utils.vo.CheckCode;
 import com.sun.mail.util.MailSSLSocketFactory;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.security.GeneralSecurityException;
+import java.util.Date;
 import java.util.Properties;
 import java.util.Random;
 
@@ -15,6 +17,9 @@ import java.util.Random;
  * Start
  */
 public class EmailUtils {
+
+    private static final long EXP_DATE = 60 * 5 * 1000;
+
     public static void sendEmail(String email, String code) throws MessagingException, GeneralSecurityException {
         // 收件人电子邮箱
         String to = email;
@@ -68,13 +73,15 @@ public class EmailUtils {
         }
     }
 
-    public static String getRandomCode() {
+    public static CheckCode getRandomCode() {
         Random random = new Random();
         String code = "";
         for (int i = 0; i < 6; i++) {
             code += random.nextInt(10);
         }
-        return code;
+        Long createTime = new Date().getTime();
+        CheckCode checkCode = new CheckCode(code, createTime, createTime + EXP_DATE);
+        return checkCode;
     }
 
 }

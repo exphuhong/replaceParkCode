@@ -13,7 +13,7 @@ import java.util.List;
 @Alias("user")
 public class ParkUser implements Serializable {
     private static final long serialVersionUID = -4188697887466612154L;
-    private Integer userId;
+    private Long userId;
     private String userName;
     private String email;
     private String password;
@@ -70,11 +70,11 @@ public class ParkUser implements Serializable {
                 '}';
     }
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
@@ -137,7 +137,7 @@ public class ParkUser implements Serializable {
     public ParkUser() {
     }
 
-    public ParkUser(Integer id, String userName, String email, String password, String school, String imgPath, String individualResume) {
+    public ParkUser(Long id, String userName, String email, String password, String school, String imgPath, String individualResume) {
         this.userId = id;
         this.userName = userName;
         this.email = email;

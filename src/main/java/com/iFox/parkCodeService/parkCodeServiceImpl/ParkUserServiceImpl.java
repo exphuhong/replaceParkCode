@@ -6,6 +6,7 @@ import com.iFox.parkCodeService.ParkUserService;
 import com.iFox.utils.EmailUtils;
 import com.iFox.utils.MD5Utils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -20,13 +21,14 @@ public class ParkUserServiceImpl implements ParkUserService {
     @Resource
     private ParkUserMapper parkUserMapper;
 
+    @Transactional
     @Override
     public String addUser(ParkUser parkUser) {
         long pwdLength = parkUser.getPassword().length();
-        if (pwdLength > 6 && pwdLength < 16) {
+        if (pwdLength > 5 && pwdLength < 16) {
             String password = parkUser.getPassword();
             parkUser.setPassword(MD5Utils.md5Message(password));
-            String userCode = EmailUtils.getRandomCode();
+            double userCode = Math.random()*4;
             parkUser.setUserName("用户" + userCode);
             parkUser.setSchool("学校" + userCode);
             parkUserMapper.addUser(parkUser);
@@ -39,7 +41,15 @@ public class ParkUserServiceImpl implements ParkUserService {
 
     @Override
     public ParkUser getUser(String email, String password) {
-        password = MD5Utils.md5Message(password);
-        return parkUserMapper.getUser(email, password);
+        return parkUserMapper.getUser(email, MD5Utils.md5Message(password));
+    }
+
+    @Override
+    public String getEmail(String email) {
+        String result = parkUserMapper.getEmail(email);
+        if (result == null||result.equals("")) {
+            return "200";
+        }
+        return "316";
     }
 }

@@ -13,10 +13,14 @@ public class TokenModel {
     private Long expTime;
     private UUID uuid;
 
+    public TokenModel() {
+    }
+
     public TokenModel(String name, Long createTime, Long expTime, UUID uuid) {
         this.name = name;
         this.createTime = createTime;
         this.expTime = expTime;
+
         this.uuid = uuid;
     }
 

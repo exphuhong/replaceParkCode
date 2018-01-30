@@ -1,35 +1,30 @@
 package com.iFox.utils.vo;
 
+import com.iFox.entity.ParkUser;
+
 /**
  * Created by exphuhong
  * Date 18-1-29.
  * Start
  */
 public class LoginJson {
-    private String email;
-    private String password;
+    private ParkUser parkUser;
     private TokenModel tokenModel;
 
-    public LoginJson(String email, String password, TokenModel tokenModel) {
-        this.email = email;
-        this.password = password;
+    public LoginJson() {
+    }
+
+    public LoginJson(ParkUser parkUser, TokenModel tokenModel) {
+        this.parkUser = parkUser;
         this.tokenModel = tokenModel;
     }
 
-    public String getEmail() {
-        return email;
+    public ParkUser getParkUser() {
+        return parkUser;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setParkUser(ParkUser parkUser) {
+        this.parkUser = parkUser;
     }
 
     public TokenModel getTokenModel() {

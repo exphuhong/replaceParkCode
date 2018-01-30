@@ -19,7 +19,7 @@
 
     <!--注册-->
     <insert id="addUser" parameterType="user">
-        <selectKey resultType="java.lang.Long" keyProperty="userID" order="AFTER">
+        <selectKey resultType="java.lang.Long" keyProperty="userId" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
         INSERT INTO
@@ -35,6 +35,13 @@
         FROM tbl_user
         WHERE email = #{email}
         AND password = #{password}
+    </select>
+
+    <!--邮箱查询-->
+    <select id="getEmail" resultType="java.lang.String">
+        SELECT email
+        FROM tbl_user
+        WHERE email = #{email}
     </select>
 
 </mapper>

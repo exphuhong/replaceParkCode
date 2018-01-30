@@ -4,6 +4,7 @@ import com.iFox.entity.ParkUser;
 import com.iFox.parkCodeService.ParkUserService;
 import com.google.gson.Gson;
 import com.iFox.utils.EmailUtils;
+import com.iFox.utils.vo.CheckCode;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -11,6 +12,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.mail.MessagingException;
 import java.security.GeneralSecurityException;
+import java.util.Date;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 /**
  * Created by exphuhong
@@ -20,10 +24,9 @@ import java.security.GeneralSecurityException;
 @Controller
 public class registerController {
 
-
     private static final String REGEX = "\\w+@\\w+(\\.\\w+)+";
     private static boolean flag = false;
-    private static String code = null;
+    private static CheckCode code;
     @Resource
     private ParkUserService parkUserService;
 
@@ -34,17 +37,21 @@ public class registerController {
         Gson gson = new Gson();
         ParkUser parkUser = gson.fromJson(parkUserJson, ParkUser.class);
         if (flag) {
-            if (checkCode.equals(code)) {
-                if (parkUserService.addUser(parkUser).equals("200")) {
-                    return "注册成功";
+            System.out.println(flag);
+            if (code.getCode().equals(checkCode) && (code.getExpTime()-new Date().getTime()) > 0) {
+                if (parkUserService.addUser(parkUser).equals("200")) { ;
+                    return "200";
                 } else {
-                    return "服务器异常注册失败";
+                    System.out.println("服务器异常");
+                    return "316";
                 }
             } else {
-                return "验证码不正确";
+                System.out.println("验证失败");
+                return "317";
             }
         } else {
-            return "邮箱没有验证";
+            System.out.println("邮箱没有验证");
+            return "318";
         }
 
     }
@@ -54,10 +61,15 @@ public class registerController {
     @ResponseBody
     String checkEmail(String email) throws GeneralSecurityException, MessagingException {
         if (email.matches(REGEX)) {
-            code = EmailUtils.getRandomCode();
-            EmailUtils.sendEmail(email, code);
-            flag = true;
-            return "验证码已发送";
+            if (parkUserService.getEmail(email) .equals("200") ) {
+                code = EmailUtils.getRandomCode();
+                EmailUtils.sendEmail(email, code.getCode());
+                flag = true;
+                return "200";
+            } else {
+                return "316";
+            }
+
         } else {
             return "邮箱格式不正确";
         }
